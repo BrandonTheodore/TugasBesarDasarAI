@@ -11,7 +11,7 @@ class Barang:
         return self.value == other.value
 
     def __str__(self) -> str:
-        return f"ID: {self.ID}n\Ukuran: {self.ukuran}"
+        return f"ID: {self.ID}\nUkuran: {self.ukuran}"
     
 class Container:
     def __init__(self, kapasitas: int):
@@ -26,9 +26,7 @@ class Container:
         return False
     
     def remove_barang(self, barang_keluar: Barang):
-        for barang in self.daftar_barang:
-            if barang.ID == barang_keluar:
-                self.daftar_barang.remove(barang_keluar)
+        self.daftar_barang = [b for b in self.daftar_barang if b.ID != barang_keluar.ID]
 
     def hitung_ukuran(self) -> int:
         return sum(barang.ukuran for barang in self.daftar_barang)
@@ -43,4 +41,7 @@ class Container:
         return False
 
     def __str__(self) -> str:
-        return f"Container (Kapasitas: {self.kapasitas}, Terisi: {self.hitung_ukuran()})\nBarang: {[barang.ID for barang in self.daftar_barang]}"
+        result = f"Kontainer (Total: {self.hitung_ukuran()}/{self.kapasitas}):"
+        for barang in self.daftar_barang:
+            result += f"\n{barang.ID} ({barang.ukuran})"
+        return result
