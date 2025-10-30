@@ -24,5 +24,5 @@ state.swap_barang(barang1, barang3)
 for container in state.list_container:
     print(container)
 
-objective_function(state)
+objective_function(state, 100)
 print(state.objective_function)
