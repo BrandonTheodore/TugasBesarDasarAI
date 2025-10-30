@@ -74,16 +74,10 @@ class HCsteepest():
         plt.figure(figsize=(8, 5))
         
         bars = plt.bar(container_labels, container_sizes, color='skyblue', label='Used Capacity')
-
-        # Draw capacity limit as dashed red line
         plt.hlines(capacities[0], -0.5, n - 0.5, colors='r', linestyles='dashed', label='Capacity')
-
-        # Color containers red if overfilled
         for bar, used, cap in zip(bars, container_sizes, capacities):
             if used > cap:
                 bar.set_color('salmon')
-
-        # Add text label above bars
         for i, (used, cap) in enumerate(zip(container_sizes, capacities)):
             plt.text(i, used + 2, f"{used}/{cap}", ha='center', fontsize=9)
 

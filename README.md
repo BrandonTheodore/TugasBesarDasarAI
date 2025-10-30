@@ -17,7 +17,34 @@ Repo ini berisi 3 algoritma local search dalam topik Searching pada Artificial I
 | 18223041     | Luckman Fakhmanidris A.    |
 
 ## Setup dan Run Program
+1. Buat Virtual Environment (Opsional)
+```
+python -m venv .venv
+source .venv/bin/activate   # Linux/Mac
+.venv\Scripts\activate      # Windows
+```
 
+2. Install Dependency
+```
+pip install -r requirements.txt
+```
+
+3. Pastikan file input berada di root directory
+
+- Untuk Simulated Annealing
+```
+python -m src.algorithm.simulatedannealing <input>.json
+```
+
+- Untuk Hill Climbing
+```
+python -m src.algorithm.hillclimbsteepest <input>.json 
+```
+
+- Untuk Genetic Algorithm
+```
+python -m src.algorithm.genetic_algorithm <input>.json 
+```
 ## Pembagian Tugas
 
 | Nama                    | NIM          | Tugas                                            |
