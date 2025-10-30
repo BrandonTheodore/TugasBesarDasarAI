@@ -1,5 +1,5 @@
-from entities import *
-from state import *
+from .entities import *
+from .state import *
 
 def hitung_value_kapasitas(state: State, kapasitas: int) -> int:
     result = 0

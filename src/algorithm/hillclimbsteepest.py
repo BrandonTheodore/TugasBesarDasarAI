@@ -2,6 +2,7 @@ from ..core.entities import *
 from ..core.objective_function import *
 from ..core.state import *
 import time
+import matplotlib.pyplot as plt
 
 class HCsteepest():
     def __init__(self, state: State):
@@ -12,6 +13,7 @@ class HCsteepest():
         self.neighbours = None
         self.iteration = 0
         self.time_execution = 0
+        self.objective_history = []
 
     def run(self, kapasitas, list_barang: List[Barang]):
         start = time.time()
@@ -26,6 +28,10 @@ class HCsteepest():
             neighbours = self.initial_state.generate_neighbour(kapasitas)
             hitung_of(neighbours, kapasitas)
             neighbour = neighbours[0]
+
+            best_neighbour = min(neighbours, key=lambda n: n.objective_function)
+            best_value = best_neighbour.objective_function
+            self.objective_history.append(best_value)
             self.iteration += 1
             for successor in neighbours[1:]:
                 if neighbour.objective_function > successor.objective_function:
@@ -41,6 +47,14 @@ class HCsteepest():
                 end = time.time()
 
                 self.time_execution = (end - start) * 1000
+                plt.figure(figsize=(7, 4))
+                plt.plot(range(len(self.objective_history)), self.objective_history, marker='o')
+                plt.title("Objective Function vs Iteration")
+                plt.xlabel("Iteration")
+                plt.ylabel("Objective Function Value")
+                plt.grid(True, linestyle="--", alpha=0.6)
+                plt.tight_layout()
+                plt.show()
                 return self.initial_state
             
             self.initial_state = neighbour
