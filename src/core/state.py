@@ -81,17 +81,12 @@ class State:
         container1.add_barang(barang2)
         container2.add_barang(barang1)
 
-    def generate_neighbour(self):
-        daftar_kontainer = self.list_container
-        for i in range(len(daftar_kontainer)):
-            for j in range(i+1, len(daftar_kontainer)):
-                neighbour = State(self.list_barang)
-                try:
-                    neighbour.swap_barang(neighbour.list_barang[i], neighbour.list_barang[j])
-                except ValueError:
-                    if neighbour.list_barang[i].ukuran > neighbour.list_barang[j].ukuran:
-                        neighbour.move_to_empty(neighbour.list_barang[i], len(daftar_kontainer))
-                    else:
-                        neighbour.move_to_empty(neighbour.list_barang[j], len(daftar_kontainer))
-                yield neighbour
+    def generate_neighbour(self, kapasitas: int):
+        list_of_states = []
+        for i in range ((len(self.list_barang) ** 2) - 1):
+            state = State(self.list_barang)
+            state.initiate_random(kapasitas)
+            list_of_states.append(state)
+        
+        return list_of_states
 
