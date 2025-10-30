@@ -67,7 +67,7 @@ def delta_e_over_iteration(x):
     plt.show()
 
 def local_optima(best_fitness, last_best_fitness, no_improve_steps, stuck_counter, stuck_threshold):
-    if best_fitness < last_best_fitness:
+    if best_fitness != last_best_fitness:
         no_improve_steps = 0
         last_best_fitness = best_fitness
     else:
@@ -143,7 +143,7 @@ def simulated_annealing(start_temp, end_temp, prob, iteration, list_of_barang):
 
     
 list_barang = generate_barang()
-print("Daftar Barang:")
+print("List Barang:")
 for barang in list_barang:
     print(barang)
 
