@@ -2,6 +2,7 @@ from ..core.entities import *
 from ..core.objective_function import *
 from ..core.state import *
 import time
+import matplotlib.pyplot as plt
 
 class HCsteepest():
     def __init__(self, state: State):
@@ -12,6 +13,7 @@ class HCsteepest():
         self.neighbours = None
         self.iteration = 0
         self.time_execution = 0
+        self.objective_history = []
 
     def run(self, kapasitas, list_barang: List[Barang]):
         start = time.time()
@@ -26,10 +28,15 @@ class HCsteepest():
             neighbours = self.initial_state.generate_neighbour(kapasitas)
             hitung_of(neighbours, kapasitas)
             neighbour = neighbours[0]
+
+            best_neighbour = min(neighbours, key=lambda n: n.objective_function)
+            best_value = best_neighbour.objective_function
+            self.objective_history.append(best_value)
+            self.iteration += 1
             for successor in neighbours[1:]:
                 if neighbour.objective_function > successor.objective_function:
                     neighbour = successor
-                    self.iteration += 1
+
             objective_function(neighbour, kapasitas)
             self.neighbour_value = neighbour.objective_function
             
@@ -40,19 +47,24 @@ class HCsteepest():
                 end = time.time()
 
                 self.time_execution = (end - start) * 1000
+                plt.figure(figsize=(7, 4))
+                plt.plot(range(len(self.objective_history)), self.objective_history, marker='o')
+                plt.title("Objective Function vs Iteration")
+                plt.xlabel("Iteration")
+                plt.ylabel("Objective Function Value")
+                plt.grid(True, linestyle="--", alpha=0.6)
+                plt.tight_layout()
+                plt.show()
                 return self.initial_state
             
             self.initial_state = neighbour
             self.initial_state_value = neighbour.objective_function
 
-barang1 = Barang("XX11", 50)
-barang2 = Barang("XX21", 50)
-barang3 = Barang("xx31", 20)
 
-list_barang :  List[Barang] = []
-list_barang.append(barang1)
-list_barang.append(barang2)
-list_barang.append(barang3)
+list_barang = []
+for i in range(100):
+    barang = Barang(f"XX{i}", random.randint(1,100))
+    list_barang.append(barang)
 
 state = State(list_barang)
 state.initiate_random(100)
@@ -63,6 +75,7 @@ hcsteep = HCsteepest(state)
 hcsteep.run(100, list_barang)
 print(f"time: {hcsteep.time_execution}\n")
 print(f"{hcsteep.final_state}\n")
+print(f"iterasi: {hcsteep.iteration}\n")
 print(f"final value: {hcsteep.final_state_value}")
 
 

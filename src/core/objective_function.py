@@ -1,12 +1,12 @@
-from entities import *
-from state import *
+from .entities import *
+from .state import *
 
 def hitung_value_kapasitas(state: State, kapasitas: int) -> int:
     result = 0
     
     for container in state.list_container:
         if container.hitung_ukuran() > kapasitas:
-            result += container.hitung_ukuran() - kapasitas
+            result += (container.hitung_ukuran() - kapasitas)*2
 
     return result
 
@@ -16,9 +16,11 @@ def hitung_value_kepadatan(state: State) -> int:
 
     for container in state.list_container:
         if container.hitung_ukuran() <= container.kapasitas:
-            total_sisa += container.kapasitas - container.hitung_ukuran()
+            kepadatan = container.hitung_ukuran() / container.kapasitas
+
+    kepadatan = kepadatan / len(state.list_container)
     
-    result = total_sisa
+    result = (1 - kepadatan) * len(state.list_container)
 
     return result
 
