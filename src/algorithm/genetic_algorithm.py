@@ -24,7 +24,6 @@ class GeneticAlgorithm:
         self.mutation_prob = mutation_prob
         self.tournament_size = tournament_size
         self.elitism_count = elitism_count
-        
         self.population: List[State] = []
         self.history_best_fitness: List[float] = []
         self.history_avg_fitness: List[float] = []
@@ -49,7 +48,6 @@ class GeneticAlgorithm:
         
         container_to_inject = random.choice(parent1.list_container)
         items_in_container = {b.ID for b in container_to_inject.daftar_barang}
-
         new_child_containers: List[Container] = []
         for container in child.list_container:
             items_to_keep = [b for b in container.daftar_barang if b.ID not in items_in_container]
@@ -58,7 +56,6 @@ class GeneticAlgorithm:
                 for item in items_to_keep:
                     new_container.add_barang(item)
                 new_child_containers.append(new_container)
-        
         new_child_containers.append(copy.deepcopy(container_to_inject))
         child.list_container = new_child_containers
         objective_function(child, self.kapasitas)
@@ -87,7 +84,6 @@ class GeneticAlgorithm:
             pass
 
     def _get_best_individuals(self, n: int) -> List[State]:
-        """Mendapatkan n individu terbaik (OF terendah) dari populasi."""
         sorted_pop = sorted(self.population, key=lambda s: s.objective_function)
         return sorted_pop[:n]
 
@@ -102,7 +98,6 @@ class GeneticAlgorithm:
         self._create_initial_population()
         initial_best_state = copy.deepcopy(self._get_best_individuals(1)[0])
         self._record_history()
-        
         for _ in range(self.iterations):
             new_population = []
             elites = self._get_best_individuals(self.elitism_count)
@@ -115,9 +110,8 @@ class GeneticAlgorithm:
                 new_population.append(child)
             self.population = new_population
             self._record_history()
-        
+
         end_time = time.time()
         duration = end_time - start_time
         final_best_state = self._get_best_individuals(1)[0]
-        
         return initial_best_state, final_best_state, duration, self.history_best_fitness, self.history_avg_fitness
