@@ -7,8 +7,6 @@ def hitung_value_kapasitas(state: State, kapasitas: int) -> int:
     for container in state.list_container:
         if container.hitung_ukuran() > kapasitas:
             result += (container.hitung_ukuran() - kapasitas)*2
-        else:
-            result+= kapasitas - container.hitung_ukuran()
 
     return result
 
