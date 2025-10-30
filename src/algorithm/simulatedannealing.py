@@ -4,10 +4,10 @@ import random
 import copy
 import matplotlib.pyplot as plt
 import sys
-sys.path.insert(0, "../core")
-from entities import Barang, Container
-from state import State
-from objective_function import objective_function
+from ..core.entities import Barang, Container
+from ..core.state import State
+from ..core.objective_function import objective_function
+from ..utils.parser import *
 
 def generate_neighbour(list_of_barang, kapasitas):
     list_of_states = []
@@ -142,7 +142,20 @@ def simulated_annealing(start_temp, end_temp, prob, iteration, list_of_barang):
     return best.list_container
 
     
-list_barang = generate_barang()
+if len(sys.argv) < 2:
+    print("Usage: python main.py <input_file.json>")
+    sys.exit(1)
+
+input_file = sys.argv[1]
+
+try:
+    with open(input_file, "r") as f:
+        json_input = f.read()
+except FileNotFoundError:
+    print(f"Error: File '{input_file}' not found.")
+    sys.exit(1)
+
+kapasitas, list_barang = parse_input(json_input)
 print("List Barang:")
 for barang in list_barang:
     print(barang)
