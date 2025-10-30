@@ -23,14 +23,15 @@ Repo ini berisi 3 algoritma local search dalam topik Searching pada Artificial I
 | Nama                    | NIM          | Tugas                                            |
 | ---                     | ---          | ---                                              |
 | Brandon Theodore F.     | 18223020     | - Membuat algoritma simulated annealing          |
-|                                        | - Membuat repository github                      |
-|                                        | - Membuat template dokumen laporan               |
-|                                        | - Mengerjakan laporan bagian simulated annealing |
-|                                        | - Debugging Objective Function                   |
+|                         |              | - Membuat repository github                      |
+|                         |              | - Membuat template dokumen laporan               |
+|                         |              | - Mengerjakan laporan bagian simulated annealing |
+|                         |              | - Debugging Objective Function                   |
 | Rafli Dwi Nugraha       | 18223038     | - Membuat algoritma hill climbing                |
-|                                        | - Membuat objective function                     |
-|                                        | - Membuat class State, Barang, dan Container     |
-|                                        | - Mengerjakan laporan bagian hill climbing       |
+|                         |              | - Membuat objective function                     |
+|                         |              | - Membuat class State, Barang, dan Container     |
+|                         |              | - Mengerjakan laporan bagian hill climbing       |
 | Luckman Fakhmanidris A. | 18223041     | - Membuat algoritma genetic                      |
-|                                        | - Mengerjakan laporan bagian genetic algorithm   |
+|                         |              | - Mengerjakan laporan bagian genetic algorithm   |
+
 
