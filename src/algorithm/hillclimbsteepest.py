@@ -1,8 +1,11 @@
 from ..core.entities import *
 from ..core.objective_function import *
 from ..core.state import *
+from ..utils.parser import *
 import time
 import matplotlib.pyplot as plt
+import numpy as np
+import sys
 
 class HCsteepest():
     def __init__(self, state: State):
@@ -60,23 +63,62 @@ class HCsteepest():
             self.initial_state = neighbour
             self.initial_state_value = neighbour.objective_function
 
+    def visualize_state(self, state):
+    
+        container_sizes = [c.hitung_ukuran() for c in state.list_container]
+        capacities = [c.kapasitas for c in state.list_container]
 
-list_barang = []
-for i in range(100):
-    barang = Barang(f"XX{i}", random.randint(1,100))
-    list_barang.append(barang)
+        n = len(container_sizes)
+        container_labels = [f'C{i+1}' for i in range(n)]
+
+        plt.figure(figsize=(8, 5))
+        
+        bars = plt.bar(container_labels, container_sizes, color='skyblue', label='Used Capacity')
+        plt.hlines(capacities[0], -0.5, n - 0.5, colors='r', linestyles='dashed', label='Capacity')
+        for bar, used, cap in zip(bars, container_sizes, capacities):
+            if used > cap:
+                bar.set_color('salmon')
+        for i, (used, cap) in enumerate(zip(container_sizes, capacities)):
+            plt.text(i, used + 2, f"{used}/{cap}", ha='center', fontsize=9)
+
+        plt.title("Container Fill Level Visualization")
+        plt.ylabel("Used Capacity")
+        plt.xlabel("Container")
+        plt.ylim(0, max(max(container_sizes), capacities[0]) * 1.2)
+        plt.legend()
+        plt.grid(axis='y', linestyle='--', alpha=0.6)
+        plt.tight_layout()
+        plt.show()
+
+
+
+if len(sys.argv) < 2:
+    print("Usage: python main.py <input_file.json>")
+    sys.exit(1)
+
+input_file = sys.argv[1]
+
+try:
+    with open(input_file, "r") as f:
+        json_input = f.read()
+except FileNotFoundError:
+    print(f"Error: File '{input_file}' not found.")
+    sys.exit(1)
+
+kapasitas, list_barang = parse_input(json_input)
 
 state = State(list_barang)
-state.initiate_random(100)
+state.initiate_random(kapasitas)
 for barang in state.list_barang:
     print(barang)
 
 hcsteep = HCsteepest(state)
-hcsteep.run(100, list_barang)
-print(f"time: {hcsteep.time_execution}\n")
-print(f"{hcsteep.final_state}\n")
+hcsteep.run(kapasitas, list_barang)
+print(f"time: {hcsteep.time_execution} ms\n")
 print(f"iterasi: {hcsteep.iteration}\n")
 print(f"final value: {hcsteep.final_state_value}")
+hcsteep.visualize_state(hcsteep.initial_state)
+hcsteep.visualize_state(hcsteep.final_state)
 
 
 
