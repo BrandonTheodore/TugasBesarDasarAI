@@ -1,5 +1,5 @@
-from entities import *
-from state import *
+from .entities import *
+from .state import *
 
 def hitung_value_kapasitas(state: State, kapasitas: int) -> int:
     result = 0
@@ -22,8 +22,8 @@ def hitung_value_kepadatan(state: State) -> int:
 
     return result
 
-def objective_function(state: State, kapasitas: int):
-    state.objective_function = hitung_value_kapasitas(state, kapasitas) + hitung_value_kepadatan(state)
+def objective_function(current_state: State, kapasitas: int):
+    current_state.objective_function = hitung_value_kapasitas(current_state, kapasitas) + hitung_value_kepadatan(current_state)
 
 def hitung_of(daftar: List[State], kapasitas: int):
     for state in daftar:

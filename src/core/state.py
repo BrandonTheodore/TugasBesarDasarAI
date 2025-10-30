@@ -1,4 +1,4 @@
-from entities import *
+from .entities import *
 import random
 
 class State:
@@ -89,7 +89,7 @@ class State:
                 try:
                     neighbour.swap_barang(neighbour.list_barang[i], neighbour.list_barang[j])
                 except ValueError:
-                    if neighbour.list_barang[i].ukuran > neighbour.list_barang[j]:
+                    if neighbour.list_barang[i].ukuran > neighbour.list_barang[j].ukuran:
                         neighbour.move_to_empty(neighbour.list_barang[i], len(daftar_kontainer))
                     else:
                         neighbour.move_to_empty(neighbour.list_barang[j], len(daftar_kontainer))
