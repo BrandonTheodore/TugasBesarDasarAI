@@ -5,9 +5,15 @@ import copy
 import matplotlib.pyplot as plt
 import sys
 sys.path.insert(0, "../core")
+<<<<<<< HEAD
 from ..core.entities import Barang, Container
 from ..core.state import State
 from ..core.objective_function import objective_function
+=======
+from src.core.entities import Barang, Container
+from src.core.state import State
+from src.core.objective_function import objective_function
+>>>>>>> 19339ab3e34f0dc52c06480962f33f786cfd2440
 
 def generate_neighbour(list_of_barang, kapasitas):
     list_of_states = []

@@ -1,6 +1,6 @@
-from entities import *
-from state import *
-from objective_function import *
+from src.core.entities import *
+from src.core.state import *
+from src.core.objective_function import *
 
 barang1 = Barang("XX11", 80)
 barang2 = Barang("XX21", 20)

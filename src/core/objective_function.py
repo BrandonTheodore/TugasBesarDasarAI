@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 from .entities import *
 from .state import *
+=======
+from src.core.entities import *
+from state import *
+>>>>>>> 19339ab3e34f0dc52c06480962f33f786cfd2440
 
 def hitung_value_kapasitas(state: State, kapasitas: int) -> int:
     result = 0
