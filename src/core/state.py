@@ -1,4 +1,4 @@
-from entities import *
+from src.core.entities import *
 import random
 
 class State:

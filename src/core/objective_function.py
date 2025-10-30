@@ -1,4 +1,4 @@
-from entities import *
+from src.core.entities import *
 from state import *
 
 def hitung_value_kapasitas(state: State, kapasitas: int) -> int:
