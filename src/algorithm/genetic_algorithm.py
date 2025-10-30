@@ -5,12 +5,10 @@ import matplotlib.pyplot as plt
 from typing import List, Tuple
 import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from core.entities import *
 from core.state import *
 from core.objective_function import *
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 class GeneticAlgorithm:
     def __init__(self, list_barang: List[Barang], kapasitas: int,
                  pop_size: int, iterations: int,
@@ -28,7 +26,7 @@ class GeneticAlgorithm:
         self.history_best_fitness: List[float] = []
         self.history_avg_fitness: List[float] = []
 
-    def _create_initial_population(self):
+    def create_initial_population(self):
         self.population = []
         for _ in range(self.pop_size):
             state = State(self.list_barang)
@@ -36,12 +34,12 @@ class GeneticAlgorithm:
             objective_function(state, self.kapasitas)
             self.population.append(state)
 
-    def _select_parent(self) -> State:
+    def select_parent(self) -> State:
         tournament = random.sample(self.population, self.tournament_size)
         winner = min(tournament, key=lambda s: s.objective_function)
         return winner
 
-    def _crossover(self, parent1: State, parent2: State) -> State:
+    def crossover(self, parent1: State, parent2: State) -> State:
         child = copy.deepcopy(parent2)
         if not parent1.list_container:
             return child
@@ -61,7 +59,7 @@ class GeneticAlgorithm:
         objective_function(child, self.kapasitas)
         return child
 
-    def _mutate(self, state: State):
+    def mutate(self, state: State):
         if random.random() < self.mutation_prob:
             mutation_type = random.randint(1, 2)
             if mutation_type == 1 and len(self.list_barang) >= 2:
@@ -69,25 +67,25 @@ class GeneticAlgorithm:
                     b1, b2 = random.sample(self.list_barang, 2)
                     state.swap_barang(b1, b2)
                 except ValueError:
-                    self._mutate_move_to_empty(state)
+                    self.mutate_move_to_empty(state)
             elif mutation_type == 2:
-                self._mutate_move_to_empty(state)
+                self.mutate_move_to_empty(state)
             else:
-                self._mutate_move_to_empty(state)
+                self.mutate_move_to_empty(state)
             objective_function(state, self.kapasitas)
 
-    def _mutate_move_to_empty(self, state: State):
+    def mutate_move_to_empty(self, state: State):
         try:
             barang_to_move = random.choice(self.list_barang)
             state.move_to_empty(barang_to_move, self.kapasitas)
         except Exception:
             pass
 
-    def _get_best_individuals(self, n: int) -> List[State]:
+    def get_best_individuals(self, n: int) -> List[State]:
         sorted_pop = sorted(self.population, key=lambda s: s.objective_function)
         return sorted_pop[:n]
 
-    def _record_history(self):
+    def record_history(self):
         best_fitness = min(s.objective_function for s in self.population)
         avg_fitness = sum(s.objective_function for s in self.population) / self.pop_size
         self.history_best_fitness.append(best_fitness)
@@ -95,23 +93,22 @@ class GeneticAlgorithm:
 
     def run(self) -> Tuple[State, State, float, List[float], List[float]]:
         start_time = time.time()
-        self._create_initial_population()
-        initial_best_state = copy.deepcopy(self._get_best_individuals(1)[0])
-        self._record_history()
+        self.create_initial_population()
+        initial_best_state = copy.deepcopy(self.get_best_individuals(1)[0])
+        self.record_history()
         for _ in range(self.iterations):
             new_population = []
-            elites = self._get_best_individuals(self.elitism_count)
+            elites = self.get_best_individuals(self.elitism_count)
             new_population.extend(copy.deepcopy(elite) for elite in elites)
             while len(new_population) < self.pop_size:
-                parent1 = self._select_parent()
-                parent2 = self._select_parent()
-                child = self._crossover(parent1, parent2)
-                self._mutate(child)
+                parent1 = self.select_parent()
+                parent2 = self.select_parent()
+                child = self.crossover(parent1, parent2)
+                self.mutate(child)
                 new_population.append(child)
             self.population = new_population
-            self._record_history()
-
+            self.record_history()
         end_time = time.time()
         duration = end_time - start_time
-        final_best_state = self._get_best_individuals(1)[0]
+        final_best_state = self.get_best_individuals(1)[0]
         return initial_best_state, final_best_state, duration, self.history_best_fitness, self.history_avg_fitness
