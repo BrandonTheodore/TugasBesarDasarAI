@@ -26,13 +26,34 @@ def generate_barang():
     
     return list_of_barang
 
+def visualize_state(state):
+    plt.figure(figsize=(8, 5))
+    y_positions = range(len(state.list_container))
+
+    for i, container in enumerate(state.list_container):
+        start = 0
+        for barang in container.daftar_barang:
+            plt.barh(
+                y=i,
+                width=barang.ukuran,
+                left=start,
+                label=barang.ID if i == 0 else "",
+            )
+            start += barang.ukuran
+        plt.axvline(container.kapasitas, color='black', linestyle='--', linewidth=1)
+
+    plt.yticks(y_positions, [f"Container {i+1}" for i in y_positions])
+    plt.xlabel("Kapasitas")
+    plt.title("State")
+    plt.tight_layout()
+    plt.show()
+
 def fitness_over_iteration(fitness_history):
     plt.figure(figsize=(8, 4))
     plt.plot(fitness_history, color='blue', linewidth=2)
     plt.title("Fitness Progress Over Iterations")
     plt.xlabel("Iteration")
     plt.ylabel("Fitness Value (Objective Function)")
-    plt.grid(True, linestyle='--', alpha=0.6)
     plt.tight_layout()
     plt.show()
 
@@ -42,7 +63,6 @@ def delta_e_over_iteration(x):
     plt.title("Delta E / T Over Iterations")
     plt.xlabel("Iteration")
     plt.ylabel("e ^(-ΔE / T)")
-    plt.grid(True, linestyle='--', alpha=0.6)
     plt.tight_layout()
     plt.show()
 
@@ -68,6 +88,8 @@ def simulated_annealing(start_temp, end_temp, prob, iteration, list_of_barang):
     print("Initial State:")
     for container in state.list_container:
         print(container)
+    
+    visualize_state(state)
 
     current = state
     current_fitness = state.objective_function
@@ -113,6 +135,7 @@ def simulated_annealing(start_temp, end_temp, prob, iteration, list_of_barang):
     execution_time = (end_time - start)
     fitness_over_iteration(fitness_history)
     delta_e_over_iteration(delta_e_history)
+    visualize_state(best)
     print(f"\nTotal Stuck in Local Optima: {stuck_counter}")
     print(f"\nExecution Time: {execution_time:.4f} s")
     print(f"\nBest Fitness: {best_fitness}")
