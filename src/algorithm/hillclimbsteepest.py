@@ -26,10 +26,11 @@ class HCsteepest():
             neighbours = self.initial_state.generate_neighbour(kapasitas)
             hitung_of(neighbours, kapasitas)
             neighbour = neighbours[0]
+            self.iteration += 1
             for successor in neighbours[1:]:
                 if neighbour.objective_function > successor.objective_function:
                     neighbour = successor
-                    self.iteration += 1
+
             objective_function(neighbour, kapasitas)
             self.neighbour_value = neighbour.objective_function
             
@@ -45,14 +46,11 @@ class HCsteepest():
             self.initial_state = neighbour
             self.initial_state_value = neighbour.objective_function
 
-barang1 = Barang("XX11", 50)
-barang2 = Barang("XX21", 50)
-barang3 = Barang("xx31", 20)
 
-list_barang :  List[Barang] = []
-list_barang.append(barang1)
-list_barang.append(barang2)
-list_barang.append(barang3)
+list_barang = []
+for i in range(100):
+    barang = Barang(f"XX{i}", random.randint(1,100))
+    list_barang.append(barang)
 
 state = State(list_barang)
 state.initiate_random(100)
@@ -63,6 +61,7 @@ hcsteep = HCsteepest(state)
 hcsteep.run(100, list_barang)
 print(f"time: {hcsteep.time_execution}\n")
 print(f"{hcsteep.final_state}\n")
+print(f"iterasi: {hcsteep.iteration}\n")
 print(f"final value: {hcsteep.final_state_value}")
 
 
