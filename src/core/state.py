@@ -74,9 +74,24 @@ class State:
         new_size2 = container2.hitung_ukuran() - barang2.ukuran + barang1.ukuran
         
         if new_size1 > container1.kapasitas or new_size2 > container2.kapasitas:
-            raise ValueError("Swap would exceed container capacity")
+            raise ValueError("Kapasitas tidak cukup")
         
         container1.remove_barang(barang1)
         container2.remove_barang(barang2)
         container1.add_barang(barang2)
         container2.add_barang(barang1)
+
+    def generate_neighbour(self):
+        daftar_kontainer = self.list_container
+        for i in range(len(daftar_kontainer)):
+            for j in range(i+1, len(daftar_kontainer)):
+                neighbour = State(self.list_barang)
+                try:
+                    neighbour.swap_barang(neighbour.list_barang[i], neighbour.list_barang[j])
+                except ValueError:
+                    if neighbour.list_barang[i].ukuran > neighbour.list_barang[j]:
+                        neighbour.move_to_empty(neighbour.list_barang[i], len(daftar_kontainer))
+                    else:
+                        neighbour.move_to_empty(neighbour.list_barang[j], len(daftar_kontainer))
+                yield neighbour
+

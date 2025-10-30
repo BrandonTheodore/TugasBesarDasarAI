@@ -24,3 +24,7 @@ def hitung_value_kepadatan(state: State) -> int:
 
 def objective_function(state: State, kapasitas: int):
     state.objective_function = hitung_value_kapasitas(state, kapasitas) + hitung_value_kepadatan(state)
+
+def hitung_of(daftar: List[State], kapasitas: int):
+    for state in daftar:
+        objective_function(state, kapasitas)    
