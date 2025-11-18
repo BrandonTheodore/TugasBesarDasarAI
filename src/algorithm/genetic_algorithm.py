@@ -212,7 +212,7 @@ def plot_comparative_states(comparison_results: List[Dict], state_type: str, tit
         by_label = dict(zip(labels, handles))
         ax.legend(by_label.values(), by_label.keys(), bbox_to_anchor=(1.02, 1), loc='upper left')
 
-    plt.tight_layout(rect=[0, 0, 0.85, 1]) # Beri ruang untuk legenda
+    plt.tight_layout(rect=[0, 0, 0.85, 1])
     
     safe_filename = f"{title}_COMP_{state_type.upper()}_STATE.png"
     plt.savefig(safe_filename)
@@ -332,8 +332,4 @@ for mut_prob in PROB_MUTASI_VARS:
     plot_comparative_fitness(comparison_results, plot_title, "Populasi")
     plot_comparative_states(comparison_results, "awal", plot_title, "Populasi", KAPASITAS_KONTAINER, COLOR_MAP)
     plot_comparative_states(comparison_results, "akhir", plot_title, "Populasi", KAPASITAS_KONTAINER, COLOR_MAP)
-
-print(f"\n\n--- Semua Eksperimen Selesai ---")
-print(f"Semua plot komparatif telah disimpan sebagai file .png di folder 'src/'.")
-print("Menampilkan semua plot...")
 plt.show()
